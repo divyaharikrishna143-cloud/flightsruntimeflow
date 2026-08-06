@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6342e896-1746-43ff-a52f-dc54b7d39bd4" >
 		<http:listener-connection host="${listener.http.host}" port="${listener.http.port}" />
 	</http:listener-config>
@@ -16,6 +17,15 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 		<http:listener doc:name="Listener" doc:id="ec2e2470-b6d5-4814-9c34-43b4f9892ed0" config-ref="HTTP_Listener_config" path="${listener.http.path}"/>
 		<logger level="INFO" doc:name="Logger" doc:id="7ee68289-ea09-489e-9b05-9acb4af51b5b" message="rumtime flow started now"/>
 		<http:request doc:name="Request" doc:id="3ada1575-2990-4a55-95e6-bd7728c9bf33" config-ref="HTTP_Request_config" path="${flights.api.path}"/>
+		<ee:transform doc:name="Transform Message" doc:id="c4415057-2f24-4ea1-b851-c6db1aa400a3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="fc2303f7-dc5b-4a87-a4c8-9df59147b482" message="runtime end now"/>
 	</flow>
 </mule>
